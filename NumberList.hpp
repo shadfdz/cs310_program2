@@ -27,14 +27,14 @@ class NumberList{
         void addList(NumberList &list);
         void addFirst(double);
         void addLast(double);
-        //clear
+        void clear();
         int count(double) const;
         double get(int index) const;
         bool isEmpty() const;
-        double remove(int index) const;
+        // double remove(int index) const;
+        void reverse();
 
-
-        void printList() const;
+        void printList() const; //REMOVEEE!!!! NOT PART OF HW
 
         int getSize() const;
 
@@ -91,6 +91,7 @@ class NumberList{
         int list_size = list.getSize();
         for (int i = 0; i < list_size; i++) {
             add(list.get(i));
+            size++;
         } 
         
     }
@@ -131,7 +132,32 @@ class NumberList{
         size++;
     }
 
-    //void clear
+    //clears the list
+    void NumberList::clear() {
+
+        ListNode *nodePtr;
+        ListNode *deleteNode;
+ 
+        if (!head || !tail) {
+            
+        } else {
+        
+        nodePtr = head->next;
+        deleteNode = head;
+        head = nullptr;
+
+        while(nodePtr) {
+            delete deleteNode;
+            deleteNode = nodePtr;
+            nodePtr = nodePtr->next;
+        }
+
+        delete tail;
+        tail = nullptr;
+
+        size = 0;
+        }
+    }
 
     //count
     int NumberList::count(double num) const {
@@ -172,18 +198,48 @@ class NumberList{
         }
     }
 
-    double NumberList::remove(int index) const {
-        double value = get(index);
+    // //removes value at index you know
+    // double NumberList::remove(int index) const {
+    //     double value = get(index);
 
-        ListNode *nodePtr;
+    //     ListNode *nodePtr;
 
-        nodePtr = head;
+    //     nodePtr = head;
 
-        if (index == 0) {
+    //     if (index == 0) {
             
-        }
-    }
+    //     }
+    // }
     
+    //reverse list direction
+    void NumberList::reverse() {
+
+        ListNode *nodePtr1;
+        ListNode *nodePtr2;
+
+        tail = head;
+
+        nodePtr1 = head->next;
+        nodePtr2 = head;
+        head->next = nullptr;
+
+        while(!nodePtr2) {
+
+        head = nodePtr1->next;
+        nodePtr1->next = nodePtr2;
+        nodePtr2 = nodePtr1;
+
+        nodePtr1 = head->next;
+        head->next = nodePtr2;
+        nodePtr2 = head;
+
+        head = nodePtr1->next;
+        nodePtr1->next = nodePtr2;
+       
+        }
+
+    }
+
     //print list
     void NumberList::printList() const{
         ListNode *nodePtr;
