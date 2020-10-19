@@ -214,30 +214,22 @@ class NumberList{
     //reverse list direction
     void NumberList::reverse() {
 
-        ListNode *nodePtr1;
-        ListNode *nodePtr2;
+        ListNode *previous;
+        ListNode *next;
 
+        previous = nullptr;
+        next = nullptr;
         tail = head;
 
-        nodePtr1 = head->next;
-        nodePtr2 = head;
-        head->next = nullptr;
+        while (head != NULL) {
 
-        while(!nodePtr2) {
-
-        head = nodePtr1->next;
-        nodePtr1->next = nodePtr2;
-        nodePtr2 = nodePtr1;
-
-        nodePtr1 = head->next;
-        head->next = nodePtr2;
-        nodePtr2 = head;
-
-        head = nodePtr1->next;
-        nodePtr1->next = nodePtr2;
-       
+            next = head->next;
+            head->next = previous;
+            previous = head;
+            head = next;
         }
 
+        head = previous;
     }
 
     //print list
