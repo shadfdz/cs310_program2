@@ -307,16 +307,40 @@ class NumberList{
     }
 
     void NumberList::sort() {
-        ListNode *nodePtr;
-        nodePtr = head;
-        double value_sorted, value_compared;
+        ListNode *nodePtr1;
+        ListNode *nodePtr2;
+        ListNode *switchNodePtr;
+        nodePtr2 = head;
 
-        // while(nodePtr->next) {
+        double temp, start_value, lowest_value;
 
-        //     value_sorted = nodePtr->value;
-        //     value_compared = nodePtr->next->value;
+        for(int i = 0; i < size - 1; i++) {
 
-        // }
+            start_value = nodePtr2->value; // value to be compared
+            lowest_value = start_value;  // set start value as initial minimum value
+            nodePtr1 = nodePtr2->next;  // assign nodePtr1 as next node to nodePtr2
+            switchNodePtr = nodePtr2;  // pointer to a node that will be switched with start value node
+            
+            // look for the node with the lowest value and assign node of lowest to switch node
+            while(nodePtr1) {
+                if (nodePtr1->value < lowest_value) {
+                    lowest_value = nodePtr1->value;
+                    switchNodePtr = nodePtr1;
+                }
+                nodePtr1 = nodePtr1->next;
+            }
+            // if minimum value has been found, switch the values
+            if (switchNodePtr) {
+                temp = switchNodePtr->value;
+                switchNodePtr->value = nodePtr2->value;
+                nodePtr2->value = temp;
+                switchNodePtr = nullptr;
+            }
+            
+            nodePtr2 = nodePtr2->next;
+
+        }
+
 
     }
 
