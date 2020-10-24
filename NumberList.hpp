@@ -31,12 +31,14 @@ class NumberList{
         int count(double) const;
         double get(int index) const;
         bool isEmpty() const;
-        // double remove(int index) const;
+        double remove(int index);
         void reverse();
+        double set(int index, double value);
+        int getSize() const;
+        void sort();
 
         void printList() const; //REMOVEEE!!!! NOT PART OF HW
 
-        int getSize() const;
 
 
 };
@@ -179,15 +181,19 @@ class NumberList{
     //get member
     double NumberList::get(int index) const {
         
-        ListNode *nodePtr;
+        double val;
+        if (index == size - 1) {
+            val = tail->value;
+        } else {
+            ListNode *nodePtr;
+            nodePtr = head;
 
-        nodePtr = head;
-
-        for(int i = 0; i < index; i++) {
-            nodePtr = nodePtr->next;
+            for(int i = 0; i < index; i++) {
+                nodePtr = nodePtr->next;
+            }
+            val = nodePtr->value;
         }
-
-        return nodePtr->value;
+        return val;
     }
 
     bool NumberList::isEmpty() const {
@@ -199,17 +205,52 @@ class NumberList{
     }
 
     // //removes value at index you know
-    // double NumberList::remove(int index) const {
-    //     double value = get(index);
+    double NumberList::remove(int index) {
 
-    //     ListNode *nodePtr;
+        double val;
+        ListNode *nodePtr1;
+        ListNode *nodePtr2;
 
-    //     nodePtr = head;
+        nodePtr1 = head;
 
-    //     if (index == 0) {
-            
-    //     }
-    // }
+        if (size > 0) {
+
+            if (index == 0) {
+                head = nodePtr1->next;
+                val = nodePtr1->value;
+                delete nodePtr1;
+            } else if (index == size - 1) {
+
+                while (nodePtr1->next->next) {
+                    nodePtr1 = nodePtr1->next;
+                }
+
+                val = tail->value;
+                delete tail;
+                nodePtr1->next = NULL;
+                tail = nodePtr1;
+
+            } else if (index > 1 && index < size) {
+
+                for (int i = 0; i < index; i++) {
+                    nodePtr2 = nodePtr1;
+                    nodePtr1 = nodePtr1->next;
+                }
+
+                val = nodePtr1->value;
+                nodePtr2->next = nodePtr1->next;
+                delete nodePtr1;
+
+            } else {
+                std::cout << "Please enter a valid index\n";
+            }
+
+
+        
+        }
+        return val;
+       
+    }
     
     //reverse list direction
     void NumberList::reverse() {
@@ -232,6 +273,22 @@ class NumberList{
         head = previous;
     }
 
+    double NumberList::set(int index, double value) {
+        
+        ListNode *nodePtr;
+        nodePtr = head;
+        double val;
+
+        for(int i = 0; i < index; i++) {
+            nodePtr = nodePtr->next;
+        }
+
+        val = nodePtr->value;
+        nodePtr->value = value;
+
+        return val;
+    }
+    
     //print list
     void NumberList::printList() const{
         ListNode *nodePtr;
@@ -249,6 +306,19 @@ class NumberList{
         return size;
     }
 
+    void NumberList::sort() {
+        ListNode *nodePtr;
+        nodePtr = head;
+        double value_sorted, value_compared;
+
+        // while(nodePtr->next) {
+
+        //     value_sorted = nodePtr->value;
+        //     value_compared = nodePtr->next->value;
+
+        // }
+
+    }
 
 
 
