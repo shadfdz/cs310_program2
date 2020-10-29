@@ -14,7 +14,6 @@ class SinglyLinkedList : public List<E> {
             struct Node *next;
         };
 
-        int list_size;
         Node *head;
         Node *tail;
 
@@ -22,13 +21,11 @@ class SinglyLinkedList : public List<E> {
         SinglyLinkedList(){
             head = nullptr;
             tail = nullptr;
-            list_size = 0;
         }
 
         SinglyLinkedList(SinglyLinkedList const &list) {
             head = nullptr;
             tail = nullptr;
-            list_size = 0;
         }
 
         ~SinglyLinkedList() {
@@ -61,8 +58,6 @@ class SinglyLinkedList : public List<E> {
                 tail = newNode;
             }
 
-            list_size++;
-
             return true;
         }
 
@@ -78,8 +73,6 @@ class SinglyLinkedList : public List<E> {
             head = newNode;
             newNode->next = nodePtr;
 
-            list_size++;    
-
             return true;
         }
 
@@ -90,7 +83,6 @@ class SinglyLinkedList : public List<E> {
             
             for (int i = 0; i < add_size; i++) {
                 add(list.get(i));
-                list_size++;
             }
 
             return true;     
@@ -114,29 +106,57 @@ class SinglyLinkedList : public List<E> {
                 tail = newNode;
                 }
 
-            list_size++;
-
             return true;
         }
 
-        // template <class E>
-        virtual void printList() const {
+        virtual void clear() {
+
+            Node *nodePtr;
+            Node *deleteNode;
+        
+            if (!head || !tail) {
+                    
+            } else {
+                
+                nodePtr = head->next;
+                deleteNode = head;
+                head = nullptr;
+
+                while(nodePtr) {
+                    delete deleteNode;
+                    deleteNode = nodePtr;
+                    nodePtr = nodePtr->next;
+            }
+
+                delete tail;
+                tail = nullptr;
+                
+            }
+        }       
+
+        virtual int count(E num) const {
+                
+            int count = 0;
 
             Node *nodePtr;
 
             nodePtr = head;
 
             while(nodePtr) {
-                std::cout << nodePtr->value << "\n";
+                if (nodePtr->value == num) 
+                    count++;
                 nodePtr = nodePtr->next;
             }
-        }
+
+            return count;
+        } 
+
 
         virtual E get(int index) const {
 
             E val;
 
-            if (index == (list_size - 1)) {
+            if (index == (this->size() - 1) || index == -1) {
                 val = tail->value;
             } else {
 
@@ -152,226 +172,162 @@ class SinglyLinkedList : public List<E> {
 
         }
 
-        virtual int size() const {
-            return list_size;
+        virtual bool isEmpty() const {
+            if (this->size() == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        virtual E remove(int index) {
+
+            double val = 0; // edit this
+            Node *nodePtr1;
+            Node *nodePtr2;
+
+            nodePtr1 = head;
+            int list_size = this->size();
+
+            if (list_size > 0) {
+
+                if (index == 0) {
+                    head = nodePtr1->next;
+                    val = nodePtr1->value;
+                    delete nodePtr1;
+                } else if (index == -1) {
+
+                    while (nodePtr1->next->next) {
+                        nodePtr1 = nodePtr1->next;
+                    }
+
+                    val = tail->value;
+                    delete tail;
+                    nodePtr1->next = NULL;
+                    tail = nodePtr1;
+
+                } else if (index > 0 && index < list_size) {
+
+                    for (int i = 0; i < index; i++) {
+                        nodePtr2 = nodePtr1;
+                        nodePtr1 = nodePtr1->next;
+                    }
+
+                    val = nodePtr1->value;
+                    nodePtr2->next = nodePtr1->next;
+                    delete nodePtr1;
+
+                } else {
+                    std::cout << "Please enter a valid index\n";
+                }
+            }
+            return val;
+        }
+
+        virtual void reverse() {
+
+            Node *previous;
+            Node *next;
+
+            previous = nullptr;
+            next = nullptr;
+            tail = head;
+
+            while (head != NULL) {
+
+                next = head->next;
+                head->next = previous;
+                previous = head;
+                head = next;
+            }
+
+            head = previous;
+        }
+
+        virtual E set(int index, E value) {
+                
+            Node *nodePtr;
+            nodePtr = head;
+            E val;
+
+            for(int i = 0; i < index; i++) {
+                nodePtr = nodePtr->next;
+            }
+
+            val = nodePtr->value;
+            nodePtr->value = value;
+
+            return val;
         }
 
 
-// template <class E>
-// void SinglyLinkedList<E>::clear() {
-
-//     Node *nodePtr;
-//     Node *deleteNode;
- 
-//     if (!head || !tail) {
+        virtual int size() const {
             
-//     } else {
-        
-//         nodePtr = head->next;
-//         deleteNode = head;
-//         head = nullptr;
+            int linked_list_size = 0;
 
-//         while(nodePtr) {
-//             delete deleteNode;
-//             deleteNode = nodePtr;
-//             nodePtr = nodePtr->next;
-//     }
+            Node *nodePtr;
+            nodePtr = head;
 
-//         delete tail;
-//         tail = nullptr;
-//         size = 0;
-        
-//     }
-//  }
+            while(nodePtr) {
+                linked_list_size++;
+                nodePtr = nodePtr->next;
+            }
 
-//  template <class E>
-// int SinglyLinkedList<E>::count(E num) const {
-        
-//     int count = 0;
+            return linked_list_size;
+        }
 
-//     Node *nodePtr;
+        // template <class E>
+        virtual void printList() const {
 
-//     nodePtr = head;
+            Node *nodePtr;
 
-//     while(nodePtr) {
-//         if (nodePtr->value == num) 
-//             count++;
-//         nodePtr = nodePtr->next;
-//     }
+            nodePtr = head;
 
-//     return count;
-// }
+            while(nodePtr) {
+                std::cout << nodePtr->value << "\n";
+                nodePtr = nodePtr->next;
+            }
+        }
 
-// template <class E>
-// E SinglyLinkedList<E>::get(int index) const {
-        
-    // double val;
-    // if (index == size - 1) {
-    //     val = tail->value;
-    // } else {
-
-    //     Node *nodePtr;
-    //     nodePtr = head;
-
-    //     for(int i = 0; i < index; i++) {
-    //         nodePtr = nodePtr->next;
-    //     }
-
-    //     val = nodePtr->value;
-    // }
-    // return val;
-// }
-
-// template <class E>
-// bool SinglyLinkedList<E>::isEmpty() const {
-//     if (size == 0) {
-//         return true;
-//     } else {
-//         return false;
-//     }
-// }
-
-// template <class E>
-// E SinglyLinkedList<E>::remove(int index) {
-
-//     double val;
-//     Node *nodePtr1;
-//     Node *nodePtr2;
-
-//     nodePtr1 = head;
-
-//     if (size > 0) {
-
-//         if (index == 0) {
-//             head = nodePtr1->next;
-//             val = nodePtr1->value;
-//             delete nodePtr1;
-//         } else if (index == size - 1) {
-
-//             while (nodePtr1->next->next) {
-//                 nodePtr1 = nodePtr1->next;
-//             }
-
-//             val = tail->value;
-//             delete tail;
-//             nodePtr1->next = NULL;
-//             tail = nodePtr1;
-
-//         } else if (index > 1 && index < size) {
-
-//             for (int i = 0; i < index; i++) {
-//                 nodePtr2 = nodePtr1;
-//                 nodePtr1 = nodePtr1->next;
-//             }
-
-//             val = nodePtr1->value;
-//             nodePtr2->next = nodePtr1->next;
-//             delete nodePtr1;
-
-//         } else {
-//             std::cout << "Please enter a valid index\n";
-//         }
-//     }
-//     return val;
-// }
-
-// template <class E>
-// void SinglyLinkedList<E>::reverse() {
-
-//     Node *previous;
-//     Node *next;
-
-//     previous = nullptr;
-//     next = nullptr;
-//     tail = head;
-
-//     while (head != NULL) {
-
-//         next = head->next;
-//         head->next = previous;
-//         previous = head;
-//         head = next;
-//     }
-
-//     head = previous;
-// }
-
-// template <class E>
-// E SinglyLinkedList<E>::set(int index, E value) {
-        
-//     Node *nodePtr;
-//     nodePtr = head;
-//     double val;
-
-//     for(int i = 0; i < index; i++) {
-//         nodePtr = nodePtr->next;
-//     }
-
-//     val = nodePtr->value;
-//     nodePtr->value = value;
-
-//     return val;
-// }
-
-// template <class E>
-// void SinglyLinkedList<E>::printList() const {
-
-//     Node *nodePtr;
-
-//     nodePtr = head;
-
-//     while(nodePtr) {
-//         std::cout << nodePtr->value << "\n";
-//         nodePtr = nodePtr->next;
-//     }
-
-// }
-
-// // template <class E>
-// // int SinglyLinkedList<E>::getSize() const {
-// //         return size;
-// // }
-
-// template <class E>
-// void SinglyLinkedList<E>::sort() {
-    
-//     Node *nodePtr1;
-//     Node *nodePtr2;
-//     Node *switchNodePtr;
-//     nodePtr2 = head;
-
-//     E temp, start_value, lowest_value;
-
-//     for(int i = 0; i < size - 1; i++) {
-
-//         start_value = nodePtr2->value; // value to be compared
-//         lowest_value = start_value;  // set start value as initial minimum value
-//         nodePtr1 = nodePtr2->next;  // assign nodePtr1 as next node to nodePtr2
-//         switchNodePtr = nodePtr2;  // pointer to a node that will be switched with start value node
+        virtual void sort() {
             
-//         // look for the node with the lowest value and assign node of lowest to switch node
-//         while(nodePtr1) {
+            Node *nodePtr1;
+            Node *nodePtr2;
+            Node *switchNodePtr;
+            nodePtr2 = head;
 
-//             if (nodePtr1->value < lowest_value) {
-//                 lowest_value = nodePtr1->value;
-//                 switchNodePtr = nodePtr1;
-//             }
-            
-//             nodePtr1 = nodePtr1->next;
-//         }
-        
-//         // if minimum value has been found, switch the values
-//         if (switchNodePtr) {
+            E temp, start_value, lowest_value;
 
-//             temp = switchNodePtr->value;
-//             switchNodePtr->value = nodePtr2->value;
-//             nodePtr2->value = temp;
-//             switchNodePtr = nullptr;
+            for(int i = 0; i < this->size() - 1; i++) {
 
-//         }
-//         nodePtr2 = nodePtr2->next;
-//     }
-// }
+                start_value = nodePtr2->value; // value to be compared
+                lowest_value = start_value;  // set start value as initial minimum value
+                nodePtr1 = nodePtr2->next;  // assign nodePtr1 as next node to nodePtr2
+                switchNodePtr = nodePtr2;  // pointer to a node that will be switched with start value node
+                    
+                // look for the node with the lowest value and assign node of lowest to switch node
+                while(nodePtr1) {
+
+                    if (nodePtr1->value < lowest_value) {
+                        lowest_value = nodePtr1->value;
+                        switchNodePtr = nodePtr1;
+                    }
+                    
+                    nodePtr1 = nodePtr1->next;
+                }
+                
+                // if minimum value has been found, switch the values
+                if (switchNodePtr) {
+
+                    temp = switchNodePtr->value;
+                    switchNodePtr->value = nodePtr2->value;
+                    nodePtr2->value = temp;
+                    switchNodePtr = nullptr;
+
+                }
+                nodePtr2 = nodePtr2->next;
+            }
+        }
 
 
 };
