@@ -2,9 +2,14 @@
 #define SINGLYLINKEDLIST_CPP
 #include "List.hpp"
 
-// fix get to include -1, remove at 0 to include tail when size = 1, add throws for index stuff
-
+// using namespace sdsu;
 using namespace std;
+
+/**
+ * Class Definition: Class is a generic List implemention of a linked list containing a head and a tail
+ *
+ */
+
 
 template <class E>
 class SinglyLinkedList : public List<E> {
@@ -88,11 +93,17 @@ class SinglyLinkedList : public List<E> {
             newNode = new Node;
             newNode->value = num;
             
+            // if list is empty, point head and tail to new Node
+            if (!head) {
+                head = newNode;
+                tail = newNode;
+            } 
             // add new Node to front of list
+            else {
             nodePtr = head;
             head = newNode;
             newNode->next = nodePtr;
-
+            }
             return true;
         }
 
@@ -219,7 +230,7 @@ class SinglyLinkedList : public List<E> {
             // if index at -2 return 2nd to last element
             else if (index == -2 && this->size() > 1) {
                 // get 2nd to last element
-                while(nodePtr->next->next) {
+                while(nodePtr->next) {
                     nodePtr = nodePtr->next;
                 }
                 val = nodePtr->value;
@@ -321,18 +332,24 @@ class SinglyLinkedList : public List<E> {
 
             previous = nullptr;
             next = nullptr;
-            // set tail to head
-            tail = head;
 
-            // iterate will head is not null
-            while (head != NULL) {
-                next = head->next;  // point to Node next to head
-                head->next = previous;  // point head node to previous node
-                previous = head; // point previous to heads location
-                head = next; // point head to the next Node
+            if (!head || !tail) { 
+                // do nothing 
             }
-            // set last Node as head 
-            head = previous;
+            else {
+            // set tail to head
+                tail = head;
+
+                // iterate will head is not null
+                while (head != NULL) {
+                    next = head->next;  // point to Node next to head
+                    head->next = previous;  // point head node to previous node
+                    previous = head; // point previous to heads location
+                    head = next; // point head to the next Node
+                }
+                // set last Node as head 
+                head = previous;
+            }
         }
         /*
             Replaces value at index arguement with value E argument
@@ -379,19 +396,6 @@ class SinglyLinkedList : public List<E> {
                 nodePtr = nodePtr->next;
             }
             return linked_list_size;
-        }
-
-        // template <class E>
-        virtual void printList() const {
-
-            Node *nodePtr;
-
-            nodePtr = head;
-
-            while(nodePtr) {
-                std::cout << nodePtr->value << "\n";
-                nodePtr = nodePtr->next;
-            }
         }
 
         /*
